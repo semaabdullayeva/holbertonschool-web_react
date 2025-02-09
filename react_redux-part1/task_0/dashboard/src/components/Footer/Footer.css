@@ -1,0 +1,18 @@
+/* src/Footer/Footer.css */
+.App-footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 12px;
+    color: gray;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+  }
+  
+  .long-br {
+    border-top: 1px solid red;
+    margin-bottom: 20px;
+  }
+  
