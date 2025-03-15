@@ -1,18 +1,8 @@
-import { JSDOM } from 'jsdom';
+import { render, screen } from '@testing-library/react';
+import App from '../App';
 
-// Create a fake browser environment
-const dom = new JSDOM('<!DOCTYPE html><html><head></head><body></body></html>');
-
-global.window = dom.window;
-global.document = dom.window.document;
-global.navigator = {
-  userAgent: 'node.js',
-};
-
-// Mock Aphrodite’s style injection to prevent errors
-document.querySelector = (selector) => {
-  if (selector === 'style[data-aphrodite]') {
-    return document.createElement('style'); // Mock style tag
-  }
-  return null;
-};
+test('renders App component', () => {
+  render(<App />);
+  expect(screen.getByText(/Header/i)).toBeInTheDocument();
+  expect(screen.getByText(/Footer/i)).toBeInTheDocument();
+});

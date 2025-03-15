@@ -1,29 +1,42 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const initialState = {
-  user: {
-    email: '',
-    password: '',
-  },
-  isLoggedIn: false,
-};
+export const login = createAsyncThunk(
+  'auth/login',
+  async (userCredentials) => {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(userCredentials),
+    });
+    return response.json();
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: {
+    user: null,
+    status: 'idle',
+  },
   reducers: {
-    login: (state, action) => {
-      state.user.email = action.payload.email;
-      state.user.password = action.payload.password;
-      state.isLoggedIn = true;
-    },
     logout: (state) => {
-      state.user.email = '';
-      state.user.password = '';
-      state.isLoggedIn = false;
+      state.user = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload;
+      })
+      .addCase(login.rejected, (state) => {
+        state.status = 'failed';
+      });
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { logout } = authSlice.actions;
+
 export default authSlice.reducer;

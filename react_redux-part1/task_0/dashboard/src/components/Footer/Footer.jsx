@@ -1,22 +1,14 @@
-import React, { useContext } from 'react';
-import './Footer.css';
-import { getCurrentYear, getFooterCopy } from '../../utils/utils';
-import newContext from '../../Context/context';
+// Footer.jsx
+import React from "react";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
-  const { user } = useContext(newContext);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   return (
-    <footer className="App-footer">
-      <div className="long-br"></div>
-      <p>
-        Copyright {getCurrentYear()} {getFooterCopy(true)}
-      </p>
-      {user?.isLoggedIn && (
-        <p>
-          <a href="#">Contact us</a>
-        </p>
-      )}
+    <footer>
+      {/* Render the footer content */}
+      {isLoggedIn && <a href="/contact-us">Contact us</a>}
     </footer>
   );
 };
